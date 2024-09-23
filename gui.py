@@ -3,6 +3,7 @@ from tkinter import filedialog, messagebox
 import os
 import subprocess
 from app import enviar_mensajes  # Importar la función desde app.py
+from mensaje import obtener_mensaje  # Importamos la función para abrir la ventana de mensaje
 
 # Función para seleccionar el archivo de contactos
 def seleccionar_archivo():
@@ -12,6 +13,11 @@ def seleccionar_archivo():
     )
     if archivo:
         ruta_contactos.set(archivo)
+
+# Callback para recibir el mensaje procesado desde mensaje.py
+def recibir_mensaje(mensaje):
+    ventana.mensaje = mensaje  # Guardar el mensaje en la ventana principal
+    # print(f"Mensaje recibido y procesado: {mensaje}")  # Imprimir el mensaje para confirmar que llega
 
 # Función para ejecutar el script de envío
 def ejecutar_envio():
@@ -36,8 +42,13 @@ def ejecutar_envio():
         # Guardar el archivo Contactos.xlsx
         os.replace(archivo, "Contactos.xlsx")
         
+        # Verificar que el mensaje esté disponible
+        if not hasattr(ventana, 'mensaje'):
+            messagebox.showerror("Error", "Por favor, escribe y confirma un mensaje para enviar.")
+            return
+        
         # Ejecutar la función enviar_mensajes con los valores personalizados
-        enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, click_x, click_y)
+        enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, click_x, click_y, ventana.mensaje)
         messagebox.showinfo("Éxito", "El envío de mensajes ha comenzado correctamente.")
     except ValueError:
         messagebox.showerror("Error", "Por favor, ingresa valores numéricos válidos.")
@@ -61,6 +72,10 @@ entrada_archivo.pack(pady=5)
 
 boton_seleccionar = tk.Button(ventana, text="Seleccionar archivo", command=seleccionar_archivo)
 boton_seleccionar.pack(pady=5)
+
+# Botón para abrir la ventana del mensaje
+boton_mensaje = tk.Button(ventana, text="Escribir Mensaje", command=lambda: obtener_mensaje(recibir_mensaje))
+boton_mensaje.pack(pady=10)
 
 # Entradas para modificar los tiempos de espera y las coordenadas
 label_tiempos = tk.Label(ventana, text="Configurar tiempos de espera (en segundos):\nTiempo para cargar WhatsApp Web")
