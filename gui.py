@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import os
 import subprocess
+from app import enviar_mensajes  # Importar la función desde app.py
 
 # Función para seleccionar el archivo de contactos
 def seleccionar_archivo():
@@ -19,39 +20,89 @@ def ejecutar_envio():
         messagebox.showerror("Error", "Por favor, selecciona el archivo de contactos.")
         return
 
-    # Comprobar si el archivo seleccionado es válido
     if not archivo.endswith(".xlsx"):
         messagebox.showerror("Error", "El archivo seleccionado no es un archivo Excel válido.")
         return
 
-    # Establecer la ruta del archivo Contactos.xlsx en app.py
+    # Obtener los parámetros personalizados del usuario
     try:
-        # Copiar el archivo seleccionado como "Contactos.xlsx" para que sea usado por app.py
+        tiempo_carga = int(entrada_tiempo_carga.get())
+        tiempo_click = int(entrada_tiempo_click.get())
+        tiempo_envio = int(entrada_tiempo_envio.get())
+        tiempo_cerrar = int(entrada_tiempo_cerrar.get())
+        click_x = int(entrada_click_x.get())
+        click_y = int(entrada_click_y.get())
+        
+        # Guardar el archivo Contactos.xlsx
         os.replace(archivo, "Contactos.xlsx")
-
-        # Ejecutar el script app.py
-        subprocess.run(["python", "app.py"], check=True)
+        
+        # Ejecutar la función enviar_mensajes con los valores personalizados
+        enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, click_x, click_y)
         messagebox.showinfo("Éxito", "El envío de mensajes ha comenzado correctamente.")
+    except ValueError:
+        messagebox.showerror("Error", "Por favor, ingresa valores numéricos válidos.")
     except Exception as e:
         messagebox.showerror("Error", f"Error al ejecutar el script: {str(e)}")
 
 # Configuración de la ventana principal
 ventana = tk.Tk()
 ventana.title("Envío de Mensajes por WhatsApp")
-ventana.geometry("500x200")
+ventana.geometry("500x700")
 
 # Ruta del archivo seleccionada
 ruta_contactos = tk.StringVar()
 
 # Etiqueta y botón para seleccionar el archivo de contactos
-label = tk.Label(ventana, text="Seleccionar archivo de contactos (Excel):")
-label.pack(pady=10)
+label_archivo = tk.Label(ventana, text="Seleccionar archivo de contactos (Excel):")
+label_archivo.pack(pady=10)
 
-entrada = tk.Entry(ventana, textvariable=ruta_contactos, width=50)
-entrada.pack(pady=5)
+entrada_archivo = tk.Entry(ventana, textvariable=ruta_contactos, width=50)
+entrada_archivo.pack(pady=5)
 
 boton_seleccionar = tk.Button(ventana, text="Seleccionar archivo", command=seleccionar_archivo)
 boton_seleccionar.pack(pady=5)
+
+# Entradas para modificar los tiempos de espera y las coordenadas
+label_tiempos = tk.Label(ventana, text="Configurar tiempos de espera (en segundos):\nTiempo para cargar WhatsApp Web")
+label_tiempos.pack(pady=5)
+
+entrada_tiempo_carga = tk.Entry(ventana, width=10)
+entrada_tiempo_carga.insert(0, "8")  # Valor por defecto
+entrada_tiempo_carga.pack(pady=5)
+label_carga = tk.Label(ventana, text="Tiempo entre click y escribir mensaje")
+label_carga.pack()
+
+entrada_tiempo_click = tk.Entry(ventana, width=10)
+entrada_tiempo_click.insert(0, "2")  # Valor por defecto
+entrada_tiempo_click.pack(pady=5)
+label_click = tk.Label(ventana, text="Tiempo entre enviar mensaje")
+label_click.pack()
+
+entrada_tiempo_envio = tk.Entry(ventana, width=10)
+entrada_tiempo_envio.insert(0, "2")  # Valor por defecto
+entrada_tiempo_envio.pack(pady=5)
+label_envio = tk.Label(ventana, text="Tiempo para cerrar pestaña")
+label_envio.pack()
+
+entrada_tiempo_cerrar = tk.Entry(ventana, width=10)
+entrada_tiempo_cerrar.insert(0, "0")  # Valor por defecto
+entrada_tiempo_cerrar.pack(pady=5)
+
+# Entradas para modificar las coordenadas del click
+label_coordenadas = tk.Label(ventana, text="Configurar coordenadas del click (X, Y):\nPosición X del click")
+label_coordenadas.pack(pady=5)
+
+entrada_click_x = tk.Entry(ventana, width=10)
+entrada_click_x.insert(0, "1040")  # Valor por defecto
+entrada_click_x.pack(pady=5)
+label_x = tk.Label(ventana, text="Posición Y del click")
+label_x.pack()
+
+entrada_click_y = tk.Entry(ventana, width=10)
+entrada_click_y.insert(0, "590")  # Valor por defecto
+entrada_click_y.pack(pady=5)
+label_y = tk.Label(ventana, text="")
+label_y.pack()
 
 # Botón para iniciar el envío de mensajes
 boton_enviar = tk.Button(ventana, text="Iniciar envío de mensajes", command=ejecutar_envio)
