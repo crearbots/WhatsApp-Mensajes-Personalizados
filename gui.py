@@ -17,7 +17,7 @@ def seleccionar_archivo():
 # Callback para recibir el mensaje procesado desde mensaje.py
 def recibir_mensaje(mensaje):
     ventana.mensaje = mensaje  # Guardar el mensaje en la ventana principal
-    # print(f"Mensaje recibido y procesado: {mensaje}")  # Imprimir el mensaje para confirmar que llega
+    print(f"Mensaje recibido y procesado: {mensaje}")  # Imprimir el mensaje para confirmar que llega
 
 # Función para ejecutar el script de envío
 def ejecutar_envio():

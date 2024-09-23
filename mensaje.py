@@ -10,10 +10,25 @@ def obtener_mensaje(callback):
         if not mensaje:
             messagebox.showerror("Error", "El mensaje no puede estar vacío.")
         else:
+            # Codificar caracteres especiales en el mensaje
+            mensaje = mensaje.replace("%", "%25")
+            mensaje = mensaje.replace("&", "%26")
+            mensaje = mensaje.replace("#", "%23")
+            mensaje = mensaje.replace("/", "%2F")
+            mensaje = mensaje.replace("\\", "%5C")
+            mensaje = mensaje.replace("|", "%7C")
+            mensaje = mensaje.replace("$", "%24")
+            mensaje = mensaje.replace("*", "%2A")
+            mensaje = mensaje.replace("+", "%2B")
+            mensaje = mensaje.replace("=", "%3D")
+            mensaje = mensaje.replace("@", "%40")
+            mensaje = mensaje.replace("?", "%3F")
+            mensaje = mensaje.replace("¡", "%C2%A1")
+            mensaje = mensaje.replace("¿", "%C2%BF")
+
             # Convertir saltos de línea en %0D%0A
-            mensaje = mensaje.replace("\n", "%0D%0A")
-            # Codificar caracteres especiales para URL
-            # mensaje = urllib.parse.quote(mensaje)
+            mensaje = mensaje.replace("\n", "%0D%0A") 
+
             ventana_mensaje.destroy()  # Cerrar la ventana después de confirmar
             callback(mensaje)  # Devolver el mensaje validado al archivo gui.py
 

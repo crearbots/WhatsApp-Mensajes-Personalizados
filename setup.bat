@@ -20,5 +20,6 @@ echo Instalando dependencias necesarias desde requirements.txt...
 pip install -r requirements.txt
 
 echo.
-echo Instalación completada. Puedes ejecutar el programa con 'python app.py'.
+echo Instalación completada. Iniciando el programa...
+python gui.py  # Ejecutar la interfaz gráfica directamente
 pause
