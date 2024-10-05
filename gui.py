@@ -14,6 +14,15 @@ def seleccionar_archivo():
     if archivo:
         ruta_contactos.set(archivo)
 
+# Función para seleccionar la imagen o video a enviar
+def seleccionar_imagen():
+    imagen = filedialog.askopenfilename(
+        title="Seleccionar imagen o video para adjuntar",
+        filetypes=(("Imágenes y Videos", "*.png;*.jpg;*.jpeg;*.gif;*.mp4;*.mov;*.avi"), ("Todos los archivos", "*.*"))
+    )
+    if imagen:
+        ruta_imagen.set(imagen)
+
 # Callback para recibir el mensaje procesado desde mensaje.py
 def recibir_mensaje(mensaje):
     ventana.mensaje = mensaje  # Guardar el mensaje en la ventana principal
@@ -22,6 +31,8 @@ def recibir_mensaje(mensaje):
 # Función para ejecutar el script de envío
 def ejecutar_envio():
     archivo = ruta_contactos.get()
+    imagen = ruta_imagen.get()
+
     if not archivo:
         messagebox.showerror("Error", "Por favor, selecciona el archivo de contactos.")
         return
@@ -48,7 +59,7 @@ def ejecutar_envio():
             return
         
         # Ejecutar la función enviar_mensajes con los valores personalizados
-        enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, click_x, click_y, ventana.mensaje)
+        enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, click_x, click_y, ventana.mensaje, imagen)
         messagebox.showinfo("Éxito", "El envío de mensajes ha comenzado correctamente.")
     except ValueError:
         messagebox.showerror("Error", "Por favor, ingresa valores numéricos válidos.")
@@ -58,10 +69,10 @@ def ejecutar_envio():
 # Configuración de la ventana principal
 ventana = tk.Tk()
 ventana.title("Envío de Mensajes por WhatsApp")
-ventana.geometry("500x700")
+ventana.geometry("500x850")
 
-# Ruta del archivo seleccionada
-ruta_contactos = tk.StringVar()
+ruta_contactos = tk.StringVar()  # Variable para almacenar la ruta del archivo de contactos
+ruta_imagen = tk.StringVar()     # Variable para almacenar la ruta de la imagen seleccionada
 
 # Etiqueta y botón para seleccionar el archivo de contactos
 label_archivo = tk.Label(ventana, text="Seleccionar archivo de contactos (Excel):")
@@ -76,6 +87,16 @@ boton_seleccionar.pack(pady=5)
 # Botón para abrir la ventana del mensaje
 boton_mensaje = tk.Button(ventana, text="Escribir Mensaje", command=lambda: obtener_mensaje(recibir_mensaje))
 boton_mensaje.pack(pady=10)
+
+# Etiqueta y botón para seleccionar la imagen a adjuntar
+label_imagen = tk.Label(ventana, text="Seleccionar imagen o video para adjuntar:")
+label_imagen.pack(pady=10)
+
+entrada_imagen = tk.Entry(ventana, textvariable=ruta_imagen, width=50)
+entrada_imagen.pack(pady=5)
+
+boton_seleccionar_imagen = tk.Button(ventana, text="Seleccionar imagen o video", command=seleccionar_imagen)
+boton_seleccionar_imagen.pack(pady=5)
 
 # Entradas para modificar los tiempos de espera y las coordenadas
 label_tiempos = tk.Label(ventana, text="Configurar tiempos de espera (en segundos):\nTiempo para cargar WhatsApp Web")
