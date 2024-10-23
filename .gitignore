@@ -6,6 +6,7 @@ __pycache__/
 # Multimedia
 *.png
 *.mp4
+*.ico
 
 # C extensions
 *.so

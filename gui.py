@@ -103,19 +103,19 @@ label_tiempos = tk.Label(ventana, text="Configurar tiempos de espera (en segundo
 label_tiempos.pack(pady=5)
 
 entrada_tiempo_carga = tk.Entry(ventana, width=10)
-entrada_tiempo_carga.insert(0, "8")  # Valor por defecto
+entrada_tiempo_carga.insert(0, "10")  # Valor por defecto
 entrada_tiempo_carga.pack(pady=5)
 label_carga = tk.Label(ventana, text="Tiempo entre click y escribir mensaje")
 label_carga.pack()
 
 entrada_tiempo_click = tk.Entry(ventana, width=10)
-entrada_tiempo_click.insert(0, "2")  # Valor por defecto
+entrada_tiempo_click.insert(0, "3")  # Valor por defecto
 entrada_tiempo_click.pack(pady=5)
 label_click = tk.Label(ventana, text="Tiempo entre enviar mensaje")
 label_click.pack()
 
 entrada_tiempo_envio = tk.Entry(ventana, width=10)
-entrada_tiempo_envio.insert(0, "2")  # Valor por defecto
+entrada_tiempo_envio.insert(0, "3")  # Valor por defecto
 entrada_tiempo_envio.pack(pady=5)
 label_envio = tk.Label(ventana, text="Tiempo para cerrar pestaña")
 label_envio.pack()
@@ -135,7 +135,7 @@ label_x = tk.Label(ventana, text="Posición Y del click")
 label_x.pack()
 
 entrada_click_y = tk.Entry(ventana, width=10)
-entrada_click_y.insert(0, "590")  # Valor por defecto
+entrada_click_y.insert(0, "450")  # Valor por defecto
 entrada_click_y.pack(pady=5)
 label_y = tk.Label(ventana, text="")
 label_y.pack()
