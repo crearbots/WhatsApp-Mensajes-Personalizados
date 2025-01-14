@@ -29,6 +29,8 @@ def enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, cli
         # Enviar la imagen adjunta si la ruta de imagen está disponible
         if ruta_imagen and os.path.exists(ruta_imagen):
             print("Entre al IF")
+            # Hacer click en la caja de texto
+            pg.click(click_x-100, click_y)  
             # Simular dos veces TAB para acceder al botón de "Adjuntar"
             pg.press('tab')  # Primer TAB
             time.sleep(0.5)
@@ -63,5 +65,5 @@ def enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, cli
             time.sleep(tiempo_envio)
         
         # Cerrar la pestaña de WhatsApp Web
-        pg.hotkey('ctrl', 'w')      # Cerrar la pestaña
         time.sleep(tiempo_cerrar)   # Esperar antes de cerrar la pestaña
+        pg.hotkey('ctrl', 'w')      # Cerrar la pestaña

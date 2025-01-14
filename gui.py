@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import os
+import shutil
 import subprocess
 from app import enviar_mensajes  # Importar la función desde app.py
 from mensaje import obtener_mensaje  # Importamos la función para abrir la ventana de mensaje
@@ -50,8 +50,8 @@ def ejecutar_envio():
         click_x = int(entrada_click_x.get())
         click_y = int(entrada_click_y.get())
         
-        # Guardar el archivo Contactos.xlsx
-        os.replace(archivo, "Contactos.xlsx")
+        # Copiar el archivo seleccionado y renombrarlo a Contactos.xlsx
+        shutil.copy(archivo, "Contactos.xlsx")
         
         # Verificar que el mensaje esté disponible
         if not hasattr(ventana, 'mensaje'):
@@ -129,7 +129,7 @@ label_coordenadas = tk.Label(ventana, text="Configurar coordenadas del click (X,
 label_coordenadas.pack(pady=5)
 
 entrada_click_x = tk.Entry(ventana, width=10)
-entrada_click_x.insert(0, "1040")  # Valor por defecto
+entrada_click_x.insert(0, "900")  # Valor por defecto
 entrada_click_x.pack(pady=5)
 label_x = tk.Label(ventana, text="Posición Y del click")
 label_x.pack()
