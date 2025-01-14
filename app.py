@@ -31,10 +31,8 @@ def enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, cli
             print("Entre al IF")
             # Hacer click en la caja de texto
             pg.click(click_x-100, click_y)  
-            # Simular dos veces TAB para acceder al botón de "Adjuntar"
+            # Simular TAB para acceder al botón de "Adjuntar"
             pg.press('tab')  # Primer TAB
-            time.sleep(0.5)
-            pg.press('tab')  # Segundo TAB
             time.sleep(0.5)
             # Presionar ENTER para abrir la ventana de adjuntar archivos
             pg.press('enter')

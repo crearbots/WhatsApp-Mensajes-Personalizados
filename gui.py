@@ -111,7 +111,7 @@ label_carga.pack()
 entrada_tiempo_click = tk.Entry(ventana, width=10)
 entrada_tiempo_click.insert(0, "3")  # Valor por defecto
 entrada_tiempo_click.pack(pady=5)
-label_click = tk.Label(ventana, text="Tiempo entre enviar mensaje")
+label_click = tk.Label(ventana, text="Tiempo entre enviar mensaje/vídeo")
 label_click.pack()
 
 entrada_tiempo_envio = tk.Entry(ventana, width=10)
