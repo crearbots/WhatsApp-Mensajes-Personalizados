@@ -23,9 +23,7 @@ def enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, cli
         # Simular clic en la caja de texto para escribir el mensaje (ajusta las coordenadas según la pantalla)
         pg.click(click_x, click_y)  # Hacer click en la caja de texto
         time.sleep(tiempo_click)    # Esperar después del click
-        pg.press('enter')           # Enviar mensaje
-        time.sleep(tiempo_envio)    # Esperar a que se envíe el mensaje
-
+        
         # Enviar la imagen adjunta si la ruta de imagen está disponible
         if ruta_imagen and os.path.exists(ruta_imagen):
             print("Entre al IF")
@@ -62,6 +60,9 @@ def enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, cli
             pg.press('enter')
             time.sleep(tiempo_envio)
         
+        pg.press('enter')           # Enviar mensaje
+        time.sleep(tiempo_envio)    # Esperar a que se envíe el mensaje
+
         # Cerrar la pestaña de WhatsApp Web
         time.sleep(tiempo_cerrar)   # Esperar antes de cerrar la pestaña
         pg.hotkey('ctrl', 'w')      # Cerrar la pestaña
