@@ -30,7 +30,7 @@ def enviar_mensajes(tiempo_carga, tiempo_click, tiempo_envio, tiempo_cerrar, cli
         if ruta_imagen and os.path.exists(ruta_imagen):
             print("Entre al IF")
             # Hacer click en la caja de texto
-            pg.click(click_x-100, click_y)  
+            pg.click(click_x-1, click_y)  
             # Simular TAB para acceder al botón de "Adjuntar"
             pg.press('tab')  # Primer TAB
             time.sleep(0.5)
