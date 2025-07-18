@@ -1,0 +1,184 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Mensajes Personalizados - Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        button {
+            background-color: #25D366;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #128C7E;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 WhatsApp Mensajes Personalizados</h1>
+        <p>Envía mensajes personalizados a múltiples contactos usando variables como <code>{nombre}</code> y <code>{genero}</code></p>
+        
+        <form id="messageForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="mensaje">Mensaje:</label>
+                <textarea 
+                    id="mensaje" 
+                    name="mensaje" 
+                    placeholder="Hola {genero} {nombre}, espero que tengas un excelente día."
+                    required
+                ></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="contactos">Archivo de Contactos (.xlsx):</label>
+                <input type="file" id="contactos" name="contactos" accept=".xlsx" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="imagen">Imagen (opcional):</label>
+                <input type="file" id="imagen" name="imagen" accept="image/*,video/*">
+            </div>
+            
+            <h3>Configuración de Tiempos</h3>
+            <div class="config-grid">
+                <div class="form-group">
+                    <label for="tiempo_carga">Tiempo de carga (segundos):</label>
+                    <input type="number" id="tiempo_carga" name="tiempo_carga" value="15" min="1" max="60">
+                </div>
+                <div class="form-group">
+                    <label for="tiempo_click">Tiempo entre clicks (segundos):</label>
+                    <input type="number" id="tiempo_click" name="tiempo_click" value="3" min="1" max="10">
+                </div>
+                <div class="form-group">
+                    <label for="tiempo_envio">Tiempo de envío (segundos):</label>
+                    <input type="number" id="tiempo_envio" name="tiempo_envio" value="3" min="1" max="10">
+                </div>
+                <div class="form-group">
+                    <label for="tiempo_cerrar">Tiempo para cerrar (segundos):</label>
+                    <input type="number" id="tiempo_cerrar" name="tiempo_cerrar" value="3" min="1" max="10">
+                </div>
+            </div>
+            
+            <h3>Coordenadas del Click</h3>
+            <div class="config-grid">
+                <div class="form-group">
+                    <label for="click_x">Coordenada X:</label>
+                    <input type="number" id="click_x" name="click_x" value="900" min="0" max="3000">
+                </div>
+                <div class="form-group">
+                    <label for="click_y">Coordenada Y:</label>
+                    <input type="number" id="click_y" name="click_y" value="450" min="0" max="2000">
+                </div>
+            </div>
+            
+            <button type="submit" id="submitBtn">Enviar Mensajes</button>
+        </form>
+        
+        <div id="results" class="results" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.getElementById('messageForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const results = document.getElementById('results');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            results.style.display = 'none';
+            
+            try {
+                const formData = new FormData(this);
+                const response = await fetch('/enviar', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    results.innerHTML = '<h3 class="success">✅ Proceso completado</h3>';
+                    
+                    if (data.resultados && data.resultados.length > 0) {
+                        results.innerHTML += '<h4>Resultados:</h4><ul>';
+                        data.resultados.forEach(resultado => {
+                            const clase = resultado.status === 'enviado' ? 'success' : 'error';
+                            results.innerHTML += `<li class="${clase}">
+                                ${resultado.nombre} (${resultado.celular}): ${resultado.mensaje}
+                            </li>`;
+                        });
+                        results.innerHTML += '</ul>';
+                    }
+                } else {
+                    results.innerHTML = `<h3 class="error">❌ Error: ${data.error}</h3>`;
+                }
+                
+            } catch (error) {
+                results.innerHTML = `<h3 class="error">❌ Error de conexión: ${error.message}</h3>`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Mensajes';
+                results.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
