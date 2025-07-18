@@ -1,7 +1,7 @@
 # 📱 WhatsApp Mensajes Personalizados
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-GPL3.0-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/usuario/WhatsApp-Mensajes-Personalizados)
 
 > **Herramienta de automatización para envío masivo de mensajes personalizados en WhatsApp**
@@ -844,7 +844,7 @@ flake8 *.py
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la Licencia GPL-3.0. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ## ⚠️ Aviso Legal
 
